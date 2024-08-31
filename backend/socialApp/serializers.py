@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from .models import FriendRequest
 
 User = get_user_model()
 
@@ -46,3 +47,14 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "username"]
+        
+        
+class FriendRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FriendRequest
+        fields = ['id', 'sender', 'receiver', 'is_accepted', 'created_at']
+        
+    def validate(self, data):
+        if FriendRequest.objects.filter(sender=data['sender'], receiver=data['receiver']).exists():
+            raise serializers.ValidationError("Friend request already sent.")
+        return data
