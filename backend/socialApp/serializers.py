@@ -4,34 +4,38 @@ from rest_framework.validators import UniqueValidator
 
 User = get_user_model()
 
+
 class SignupSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=User.objects.all())]
+    )
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'first_name', 'last_name', 'phone']
+        fields = ["email", "password", "username", "first_name", "last_name", "phone"]
         extra_kwargs = {
-            'password': {'write_only': True},
+            "password": {"write_only": True},
         }
 
     def create(self, validated_data):
         user = User.objects.create_user(
-            email=validated_data['email'],
-            password=validated_data['password'],
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            phone=validated_data['phone']
+            email=validated_data["email"],
+            password=validated_data["password"],
+            username=validated_data["username"],
+            first_name=validated_data["first_name"],
+            last_name=validated_data["last_name"],
+            phone=validated_data["phone"],
         )
         return user
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        email = data.get('email').lower()
-        password = data.get('password')
+        email = data.get("email").lower()
+        password = data.get("password")
         user = authenticate(email=email, password=password)
         if user and user.is_active:
             return user
@@ -41,4 +45,4 @@ class LoginSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'username']
+        fields = ["id", "email", "username"]

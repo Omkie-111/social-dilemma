@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('socialApp', '0002_alter_user_groups_alter_user_user_permissions'),
+        ("socialApp", "0002_alter_user_groups_alter_user_user_permissions"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='phone',
+            model_name="user",
+            name="phone",
             field=models.CharField(default=0, max_length=15, unique=True),
             preserve_default=False,
         ),
