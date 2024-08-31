@@ -47,14 +47,16 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "email", "username"]
-        
-        
+
+
 class FriendRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = FriendRequest
-        fields = ['id', 'sender', 'receiver', 'is_accepted', 'created_at']
-        
+        fields = ["id", "sender", "receiver", "is_accepted", "created_at"]
+
     def validate(self, data):
-        if FriendRequest.objects.filter(sender=data['sender'], receiver=data['receiver']).exists():
+        if FriendRequest.objects.filter(
+            sender=data["sender"], receiver=data["receiver"]
+        ).exists():
             raise serializers.ValidationError("Friend request already sent.")
         return data

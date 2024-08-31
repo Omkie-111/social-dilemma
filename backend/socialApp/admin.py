@@ -38,13 +38,7 @@ admin.site.register(User, UserAdmin)
 
 
 class FriendRequestAdmin(admin.ModelAdmin):
-    list_display = (
-        "pk",
-        "sender",
-        "receiver",
-        "is_accepted",
-        "created_at"
-    )
+    list_display = ("pk", "sender", "receiver", "is_accepted", "created_at")
     search_fields = ("pk", "sender", "receiver", "created_at")
     ordering = ("pk", "sender", "receiver", "created_at")
 
