@@ -1,10 +1,13 @@
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import get_user_model
 
-from .serializers import SignupSerializer, LoginSerializer
+from .serializers import SignupSerializer, LoginSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -31,3 +34,18 @@ class LoginView(generics.GenericAPIView):
                 "username": user.username
             }
         })
+        
+
+class UserSearchView(generics.ListAPIView):
+    serializer_class = UserSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    pagination_class = PageNumberPagination
+    
+    def get_queryset(self):
+        query = self.request.query_params.get('q', '').strip().lower()
+        return User.objects.filter(
+            Q(email__iexact=query) | 
+            Q(username__icontains=query)
+        )
+        
