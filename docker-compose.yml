@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./backend
+    command: >
+      sh -c "python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn socialdilemma.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - ./backend:/backend
+    ports:
+      - "8000:8000"
+    networks:
+      - social_network
+
+volumes:
+  postgres_data:
+
+networks:
+  social_network:
+    driver: bridge
