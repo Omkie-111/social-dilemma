@@ -77,7 +77,6 @@ class FriendRequestActionView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         action = request.data.get("action")
         friend_request = self.get_object()
-        print("hello")
 
         if action == "accept":
             if request.user != friend_request.receiver:
