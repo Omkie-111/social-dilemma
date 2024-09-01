@@ -250,7 +250,7 @@ docker-compose down
 
 ### List Pending Friend Requests
 
-- **Endpoint**: `/friend-requests/pending/`
+- **Endpoint**: `/pending-requests/`
 - **Method**: `GET`
 - **Headers**:
   - `Authorization`: `Token <user_token_at_login>`
